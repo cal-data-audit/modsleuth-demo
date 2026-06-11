@@ -236,6 +236,29 @@ label:has(#graph-show-lattice) { display: none !important; }
 .loading-overlay{position:absolute;inset:0;background:rgba(250,242,233,.92);display:flex;align-items:center;justify-content:center;z-index:1000;font-size:15px;font-weight:700;color:var(--text-muted);flex-direction:column;gap:8px}
 .loading-overlay .spinner{width:28px;height:28px;border:3px solid var(--neutral-200);border-top-color:var(--accent-mint);border-radius:50%;animation:spin .8s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
+
+/* ================================================================
+   ABOUT MODAL
+   ================================================================ */
+.nav-about{padding:5px 14px;border:1px solid var(--neutral-500);border-radius:var(--radius-md);font-weight:600;font-size:12.5px;color:var(--neutral-300);transition:color .15s,border-color .15s}
+.nav-about:hover{color:var(--accent-mint);border-color:var(--accent-mint)}
+.about-overlay{position:fixed;inset:0;background:rgba(3,38,41,.5);display:none;align-items:flex-start;justify-content:center;z-index:2000;padding:60px 20px 20px;overflow-y:auto}
+.about-overlay.open{display:flex}
+.about-card{background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--radius-lg);box-shadow:0 8px 30px rgba(3,38,41,.25);max-width:560px;width:100%;padding:24px 28px 28px;position:relative}
+.about-card__close{position:absolute;top:14px;right:14px;width:28px;height:28px;border-radius:var(--radius-sm);background:var(--neutral-200);font-size:16px;line-height:28px;text-align:center;color:var(--text-muted)}
+.about-card__close:hover{background:var(--neutral-300);color:var(--text)}
+.about-card__title{font-family:var(--font-mono);font-weight:800;font-size:18px;letter-spacing:.04em;margin:0;color:var(--text)}
+.about-section{margin-top:18px}
+.about-section__title{font-size:10.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--text-muted);font-weight:700;margin-bottom:8px}
+.about-authors{display:flex;flex-wrap:wrap;gap:6px}
+.about-author{display:inline-flex;align-items:center;gap:4px;padding:4px 12px;border-radius:14px;background:var(--model-bg);color:var(--model-text);font-weight:600;font-size:12.5px;transition:background .12s}
+.about-author:hover{background:var(--accent-mint-bg);text-decoration:none}
+.about-author::after{content:'\2197';font-size:10px;color:var(--text-muted)}
+.about-link-row{display:flex;align-items:center;gap:8px;padding:4px 0;font-size:13px}
+.about-link-row a{word-break:break-all}
+.about-ack{font-size:12.5px;line-height:1.6;color:var(--text-secondary)}
+.about-ack p{margin:0 0 8px}
+.about-ack p:last-child{margin-bottom:0}
 </style>
 </head>
 <body>
@@ -244,6 +267,7 @@ label:has(#graph-show-lattice) { display: none !important; }
   <!-- ======== NAV BAR ======== -->
   <nav class="nav-bar">
     <span class="nav-brand">ModSleuth</span>
+    <button class="nav-about" id="about-btn" title="About ModSleuth">About</button>
     <div class="nav-tabs">
       <button class="nav-tab active" data-tab="olmo3" data-ds="olmo3" data-view="graph">Olmo 3</button><button class="nav-tab" data-tab="nemotron3" data-ds="nemotron3" data-view="graph">Nemotron 3 Super</button><button class="nav-tab" data-tab="drtulu" data-ds="drtulu" data-view="graph">DR-Tulu</button><button class="nav-tab" data-tab="smollm3" data-ds="smollm3" data-view="graph">SmolLM3</button>
       <button class="nav-tab" data-tab="ecosystem" data-ds="ecosystem" data-view="graph">Full Merged Graph</button>
@@ -268,6 +292,65 @@ label:has(#graph-show-lattice) { display: none !important; }
   </div>
 
 </div>
+
+<!-- ======== ABOUT MODAL ======== -->
+<div class="about-overlay" id="about-overlay" role="dialog" aria-modal="true" aria-labelledby="about-title">
+  <div class="about-card">
+    <button class="about-card__close" id="about-close" aria-label="Close">&times;</button>
+    <h2 class="about-card__title" id="about-title">About ModSleuth</h2>
+
+    <div class="about-section">
+      <div class="about-section__title">Authors</div>
+      <div class="about-authors">
+        <a class="about-author" href="https://sanjay-adhikesaven.github.io/" target="_blank" rel="noopener">Sanjay Adhikesaven</a>
+        <a class="about-author" href="https://hxiang-sun.github.io" target="_blank" rel="noopener">Haoxiang Sun</a>
+        <a class="about-author" href="https://sewonmin.com" target="_blank" rel="noopener">Sewon Min</a>
+      </div>
+    </div>
+
+    <div class="about-section">
+      <div class="about-section__title">Paper</div>
+      <div class="about-link-row">
+        <span class="link-badge link-badge--paper">arXiv</span>
+        <a href="https://arxiv.org/abs/2606.12385" target="_blank" rel="noopener">arxiv.org/abs/2606.12385</a>
+      </div>
+      <div class="about-link-row">
+        <span class="link-badge link-badge--hf_collection">HF Papers</span>
+        <a href="https://huggingface.co/papers/2606.12385" target="_blank" rel="noopener">huggingface.co/papers/2606.12385</a>
+      </div>
+    </div>
+
+    <div class="about-section">
+      <div class="about-section__title">Code</div>
+      <div class="about-link-row">
+        <span class="link-badge link-badge--github">GitHub</span>
+        <a href="https://github.com/cal-data-audit/modsleuth" target="_blank" rel="noopener">github.com/cal-data-audit/modsleuth</a>
+      </div>
+    </div>
+
+    <div class="about-section">
+      <div class="about-section__title">Acknowledgements</div>
+      <div class="about-ack">
+        <p>We thank the creators of the model artifacts analyzed in this work (Olmo&nbsp;3, Nemotron&nbsp;3, DR&nbsp;Tulu, SmolLM&nbsp;3, as well as intermediate models and datasets) for publicly releasing all training information that enabled this study.</p>
+        <p>We thank Kyle Lo, Noah Smith, Hanna Hajishirzi, Rishi Bommasani, the SM group members and Ai2 members for valuable discussion and feedback.</p>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+(function() {
+  const overlay = document.getElementById('about-overlay');
+  const openBtn = document.getElementById('about-btn');
+  const closeBtn = document.getElementById('about-close');
+  function setOpen(open) { overlay.classList.toggle('open', open); }
+  openBtn.addEventListener('click', () => setOpen(true));
+  closeBtn.addEventListener('click', () => setOpen(false));
+  overlay.addEventListener('click', e => { if (e.target === overlay) setOpen(false); });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && overlay.classList.contains('open')) setOpen(false);
+  });
+})();
+</script>
 
 <!-- CDN: Cytoscape + dagre -->
 <script src="https://unpkg.com/dagre@0.8.5/dist/dagre.min.js">
